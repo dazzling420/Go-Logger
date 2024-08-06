@@ -169,8 +169,15 @@ func NewBufwriter(n int, logFile string) bufwriter {
 	return w
 }
 
+func getConfigFromInterface(confi interface{}) *config.Logger {
+	conf := confi.(config.Logger)
+	return &conf
+}
+
 // NewService initializes the standard logger
-func NewService(conf *config.Logger) *standardLogger {
+func NewService(config interface{}) *standardLogger {
+	conf := getConfigFromInterface(config)
+
 	atom := zap.NewAtomicLevel()
 	atom.SetLevel(GetLevel(conf.LoggingLevel)) // level has been set
 
